@@ -33,13 +33,14 @@ y <- cbind(y, subject)
 # Clean up column naming for data set.
 colnames(y) <- c("Activity_ID","Activity","Subject")
 
-#Combine data set with labels and write to CSV
+#Combine data set with labels
 tidy_data <- cbind(y,z)
-write.csv(tidy_data, file = "tidy_data.csv")
 
 #Average tidy data set 
 tidy_data_averages <- aggregate(tidy_data[,4:dim(tidy_data)[2]], by = list(tidy_data$Activity_ID,tidy_data$Activity,tidy_data$Subject),FUN = "mean")
 
-#Clean column names and write to CSV
-colnames(tidy_data_averages[,1:3]) <- c("Activity_ID","Activity","Subject")
-write.csv(tidy_data_averages, file = "tidy_data_averages.csv")
+#Clean column names and write to file
+colnames(tidy_data_averages)[colnames(tidy_data_averages) == 'Group.1'] <- 'Activity_ID'
+colnames(tidy_data_averages)[colnames(tidy_data_averages) == 'Group.2'] <- 'Activity'
+colnames(tidy_data_averages)[colnames(tidy_data_averages) == 'Group.3'] <- 'Subject'
+write.table(tidy_data_averages, file = "tidy_data.txt", row.names = FALSE)
